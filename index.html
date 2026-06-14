@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Restore Britain - Will You Be Deported?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --rb-navy:#051E40;
+    --rb-navy-hover:#020f20;
+    --rb-navy-mid:#314662;
+    --rb-muted:#798698;
+    --rb-border:#d0d5db;
+    --rb-bg:#ffffff;
+    --rb-bg-alt:#f8f9fa;
+    --rb-shadow:0 0.125rem 0.25rem rgba(0,0,0,0.075);
+    --rb-shadow-lg:0 0.5rem 1rem rgba(5,30,64,0.08);
+    --stay:#1f7a4d;
+    --deport:#b42318;
+    --warn:#9a6700;
+    --section-gap:24px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Lato',sans-serif;
+    font-size:1.125rem;
+    line-height:1.5;
+    background:var(--rb-bg-alt);
+    color:var(--rb-navy);
+    min-height:100vh;
+  }
+
+  .site-header{
+    background:var(--rb-bg);
+    box-shadow:var(--rb-shadow);
+    position:sticky;
+    top:0;
+    z-index:10;
+  }
+  .site-header-inner{
+    max-width:640px;
+    margin:0 auto;
+    padding:14px 20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:18px;
+    flex-wrap:wrap;
+  }
+  .logo-link{display:inline-block;flex-shrink:0;}
+  .logo{
+    display:block;
+    max-width:180px;
+    max-height:54px;
+    width:auto;
+    height:auto;
+  }
+  .site-header h1{
+    font-family:'Montserrat',sans-serif;
+    font-size:1.625rem;
+    font-weight:800;
+    margin:0;
+    color:var(--rb-navy);
+    line-height:1.15;
+    letter-spacing:-0.02em;
+  }
+
+  .wrap{
+    max-width:640px;
+    width:100%;
+    margin:0 auto;
+    padding:28px 20px;
+    display:flex;
+    flex-direction:column;
+    gap:var(--section-gap);
+  }
+
+  header{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+  .badge{
+    display:inline-block;
+    font-family:'Montserrat',sans-serif;
+    font-size:0.6875rem;
+    font-weight:600;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--rb-navy-mid);
+    background:var(--rb-bg);
+    border:1px solid var(--rb-border);
+    border-radius:999px;
+    padding:4px 12px;
+    margin:0;
+    align-self:flex-start;
+  }
+  .sub{
+    font-size:1rem;
+    color:var(--rb-muted);
+    margin:0;
+    line-height:1.55;
+  }
+  .sub em{font-style:italic;}
+  .sub a{color:var(--rb-navy);font-weight:700;text-decoration:underline;text-underline-offset:2px;}
+  .sub a:hover{color:var(--rb-navy-hover);}
+
+  .trail{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .trail:empty{display:none;}
+  .quiz-block{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .crumb{
+    font-family:'Montserrat',sans-serif;
+    font-size:0.6875rem;
+    font-weight:600;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    padding:5px 12px;
+    border-radius:999px;
+    background:var(--rb-bg);
+    border:1px solid var(--rb-border);
+    color:var(--rb-muted);
+    cursor:pointer;
+    transition:border-color .15s, color .15s, background .15s;
+  }
+  .crumb:hover{border-color:var(--rb-navy);color:var(--rb-navy);}
+  .crumb.yes{color:var(--stay);border-color:rgba(31,122,77,0.35);background:rgba(31,122,77,0.06);}
+  .crumb.no{color:var(--deport);border-color:rgba(180,35,24,0.35);background:rgba(180,35,24,0.06);}
+
+  .card{
+    background:var(--rb-bg);
+    border:1px solid var(--rb-border);
+    border-radius:0.5rem;
+    padding:28px 24px;
+    box-shadow:var(--rb-shadow-lg);
+    min-height:280px;
+    display:flex;
+    flex-direction:column;
+  }
+  .card.deport{border-top:4px solid var(--deport);}
+  .card.stay{border-top:4px solid var(--stay);}
+  .card.warn{border-top:4px solid var(--warn);}
+
+  .qlabel{
+    font-family:'Montserrat',sans-serif;
+    font-size:0.6875rem;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:0.1em;
+    color:var(--rb-muted);
+    margin-bottom:12px;
+  }
+  .qlabel.result{color:var(--rb-navy);}
+
+  .qtext{
+    font-family:'Montserrat',sans-serif;
+    font-size:1.375rem;
+    font-weight:700;
+    line-height:1.35;
+    margin-bottom:10px;
+    color:var(--rb-navy);
+  }
+  .qhint{
+    font-size:1rem;
+    color:var(--rb-muted);
+    line-height:1.55;
+  }
+
+  .outcome-body{font-size:1rem;line-height:1.6;margin-top:4px;color:var(--rb-navy);}
+  .outcome-body ul{margin:10px 0 0 20px;padding:0;}
+  .outcome-body li{margin-bottom:6px;}
+
+  .stamp-wrap{
+    display:flex;
+    justify-content:center;
+    margin:24px 0 0;
+    padding:0;
+  }
+  .endtag.stamp{
+    display:inline-flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    gap:4px;
+    padding:20px 32px 18px;
+    min-width:220px;
+    max-width:100%;
+    border:4px solid currentColor;
+    border-radius:6px;
+    outline:2px solid currentColor;
+    outline-offset:5px;
+    transform:rotate(-4deg);
+    position:relative;
+    animation:stamp-in .45s cubic-bezier(.34,1.4,.64,1) both;
+  }
+  @keyframes stamp-in{
+    0%{opacity:0;transform:rotate(-4deg) scale(1.35);}
+    70%{opacity:1;transform:rotate(-4deg) scale(.97);}
+    100%{transform:rotate(-4deg) scale(1);}
+  }
+  .stamp-eyebrow{
+    font-family:'Montserrat',sans-serif;
+    font-size:0.5625rem;
+    font-weight:700;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    opacity:0.85;
+  }
+  .stamp-verdict{
+    font-family:'Montserrat',sans-serif;
+    font-size:1.625rem;
+    font-weight:800;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    line-height:1.1;
+  }
+  .stamp-result{
+    font-family:'Montserrat',sans-serif;
+    font-size:0.75rem;
+    font-weight:700;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    opacity:0.9;
+    margin-top:2px;
+  }
+  .endtag.stamp.deport{
+    color:var(--deport);
+    background:rgba(180,35,24,0.07);
+    box-shadow:0 4px 14px rgba(180,35,24,0.15);
+  }
+  .endtag.stamp.stay{
+    color:var(--stay);
+    background:rgba(31,122,77,0.07);
+    box-shadow:0 4px 14px rgba(31,122,77,0.15);
+  }
+  .endtag.stamp.warn{
+    color:var(--warn);
+    background:rgba(154,103,0,0.08);
+    box-shadow:0 4px 14px rgba(154,103,0,0.15);
+    transform:rotate(3deg);
+    animation-name:stamp-in-warn;
+  }
+  @keyframes stamp-in-warn{
+    0%{opacity:0;transform:rotate(3deg) scale(1.35);}
+    70%{opacity:1;transform:rotate(3deg) scale(.97);}
+    100%{transform:rotate(3deg) scale(1);}
+  }
+
+  .spacer{flex:1;}
+
+  .answers{
+    display:flex;
+    gap:12px;
+    margin-top:22px;
+  }
+  .ans-btn{
+    flex:1;
+    font-family:'Montserrat',sans-serif;
+    font-size:0.875rem;
+    font-weight:600;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    padding:14px 0;
+    border-radius:999px;
+    border:2px solid var(--rb-navy);
+    background:var(--rb-bg);
+    color:var(--rb-navy);
+    cursor:pointer;
+    transition:background .15s, color .15s, border-color .15s;
+  }
+  .ans-btn:hover{background:var(--rb-navy);color:#fff;}
+  .ans-btn.yes{border-color:var(--stay);color:var(--stay);}
+  .ans-btn.yes:hover{background:var(--stay);color:#fff;}
+  .ans-btn.no{border-color:var(--deport);color:var(--deport);}
+  .ans-btn.no:hover{background:var(--deport);color:#fff;}
+
+  .nav-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    margin-top:22px;
+  }
+  .nav-btn{
+    font-family:'Montserrat',sans-serif;
+    font-size:0.75rem;
+    font-weight:600;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    background:var(--rb-bg);
+    border:1px solid var(--rb-border);
+    color:var(--rb-navy);
+    padding:10px 18px;
+    border-radius:999px;
+    cursor:pointer;
+    transition:background .15s, border-color .15s;
+  }
+  .nav-btn:hover{background:var(--rb-bg-alt);border-color:var(--rb-navy);}
+  .nav-btn.primary{
+    background:var(--rb-navy);
+    border-color:var(--rb-navy);
+    color:#fff;
+  }
+  .nav-btn.primary:hover{background:var(--rb-navy-hover);border-color:var(--rb-navy-hover);}
+  .nav-btn[disabled]{opacity:0.35;cursor:default;}
+  .nav-btn[disabled]:hover{background:var(--rb-bg);border-color:var(--rb-border);}
+
+  .recap{
+    margin-top:12px;
+    border-top:1px solid var(--rb-border);
+    padding-top:14px;
+  }
+  .recap-item{
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    font-size:0.9375rem;
+    padding:6px 0;
+    border-bottom:1px solid var(--rb-bg-alt);
+  }
+  .recap-q{color:var(--rb-muted);flex:1;}
+  .recap-a{
+    font-family:'Montserrat',sans-serif;
+    font-size:0.75rem;
+    font-weight:600;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    white-space:nowrap;
+  }
+  .recap-a.yes{color:var(--stay);}
+  .recap-a.no{color:var(--deport);}
+
+  .footer-note{
+    padding:0;
+    background:var(--rb-bg);
+    border:1px solid var(--rb-border);
+    border-radius:0.5rem;
+    box-shadow:var(--rb-shadow);
+    font-size:1rem;
+    color:var(--rb-muted);
+    overflow:hidden;
+  }
+  .policy-dropdown summary{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    font-family:'Montserrat',sans-serif;
+    font-size:0.875rem;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color:var(--rb-navy);
+    padding:18px 24px;
+    cursor:pointer;
+    list-style:none;
+    user-select:none;
+    transition:background .15s;
+  }
+  .policy-dropdown summary::-webkit-details-marker{display:none;}
+  .policy-dropdown summary::after{
+    content:"";
+    flex-shrink:0;
+    width:8px;
+    height:8px;
+    border-right:2px solid var(--rb-navy);
+    border-bottom:2px solid var(--rb-navy);
+    transform:rotate(45deg);
+    transition:transform .2s;
+    margin-top:-3px;
+  }
+  .policy-dropdown[open] summary::after{
+    transform:rotate(-135deg);
+    margin-top:3px;
+  }
+  .policy-dropdown summary:hover{background:var(--rb-bg-alt);}
+  .policy-dropdown .policy-body{
+    padding:0 24px 22px;
+    border-top:1px solid var(--rb-border);
+  }
+  .policy-dropdown ul{margin:16px 0 0 20px;padding:0;}
+  .policy-dropdown li{margin-bottom:8px;line-height:1.55;}
+
+  .site-footer{
+    text-align:center;
+    font-size:0.875rem;
+    color:var(--rb-muted);
+    margin:0;
+  }
+  .site-footer a{color:var(--rb-navy);font-weight:700;text-decoration:none;}
+  .site-footer a:hover{text-decoration:underline;}
+
+  @media (max-width:480px){
+    :root{--section-gap:20px;}
+    .wrap{padding:20px 16px;}
+    .site-header h1{font-size:1.375rem;}
+    .site-header-inner{gap:12px;padding:12px 16px;}
+    .qtext{font-size:1.2rem;}
+    .card{padding:22px 18px;min-height:300px;}
+    .logo{max-width:130px;max-height:44px;}
+    .endtag.stamp{padding:16px 24px;min-width:190px;}
+    .stamp-verdict{font-size:1.375rem;}
+  }
+</style>
+</head>
+<body>
+<div class="site-header">
+  <div class="site-header-inner">
+    <a class="logo-link" href="https://www.restorebritain.org.uk/" target="_blank" rel="noopener">
+      <img src="Logo-final-dark.png" alt="Restore Britain" class="logo">
+    </a>
+    <h1>Will You Be Deported?</h1>
+  </div>
+</div>
+
+<div class="wrap">
+  <header>
+    <div class="badge">Not official material</div>
+    <p class="sub">Find out if you are eligible to remain in the UK based on Restore Britain's published immigration policy and <a href="https://assets.nationbuilder.com/restorebritain/pages/630/attachments/original/1760000259/Mass_Deportations__Legitimacy__Legality__and_Logistics.pdf?1760000259" target="_blank" rel="noopener"><em>Mass Deportations: Legitimacy, Legality, and Logistics</em></a>. Answer each question to follow the policy logic to an outcome.</p>
+  </header>
+
+  <div class="quiz-block">
+    <div class="trail" id="trail"></div>
+    <div class="card" id="card"></div>
+  </div>
+
+  <details class="footer-note policy-dropdown">
+    <summary>Restore Policy</summary>
+    <div class="policy-body">
+      <ul>
+        <li><strong>Reverse mass immigration</strong> - Net-negative migration; undo the "Boriswave".</li>
+        <li><strong>Deport all illegal migrants</strong> - Every person without permission removed (~2 million); mass deportations with hostile environment and 150,000–200,000 forced removals per year.</li>
+        <li><strong>Abolish the asylum system</strong> - Illegal entry equals automatic rejection; no taxpayer-funded hotels.</li>
+        <li><strong>Tent-based detention</strong> - Modular facilities on MoD/government land; mandatory detention pending deportation; no bail into the community.</li>
+        <li><strong>Red List</strong> - Annual security-led review; stricter checks and limited visas for high-risk countries (e.g. Pakistan, India, Afghanistan, Eritrea, Sudan, Syria).</li>
+        <li><strong>Deport foreign criminals</strong> - Automatic removal for any crime; rape-gang collaborators deported even through silence.</li>
+        <li><strong>Deport on security grounds</strong> - Extremism and rejection of British values; Shamima's Law revokes dual-national extremists.</li>
+        <li><strong>Fix the Afghan resettlement</strong> - Emergency arrivals relocated to safe third countries; Britain gave temporary refuge, not a permanent home.</li>
+        <li><strong>Integration criteria</strong> - Must speak English, work, pay tax, and not claim benefits or live in social housing; failure means deportation.</li>
+        <li><strong>Abolish ILR benefits</strong> - Time-limited, revocable residency conditional on contribution and good character.</li>
+        <li><strong>Benefits for Brits only</strong> - Universal Credit, Child Benefit, and Housing Benefit reserved for British citizens.</li>
+        <li><strong>Fairer spousal visas</strong> - Simplified fast-track for non-Red List countries; English fluency and self-sufficiency required.</li>
+        <li><strong>Legal reforms</strong> - Leave the ECHR, repeal the Human Rights Act, pass a Great Clarification Act; harder path to citizenship.</li>
+      </ul>
+    </div>
+  </details>
+
+  <p class="site-footer"><a href="https://www.restorebritain.org.uk/" target="_blank" rel="noopener">restorebritain.org.uk</a></p>
+</div>
+
+<script>
+/* ---------- Data: a single linear sequence of questions ---------- */
+/* Each question has:
+   q, hint
+   yes: { stop:true, result:{...} } OR { } (continue to next)
+   no:  same shape
+   If neither branch has "stop", the flow simply continues to the next question.
+*/
+
+const questions = [
+  {
+    id:"citizen",
+    q:"Are you a British citizen (by birth, naturalisation, etc.)?",
+    hint:"British citizens are not subject to deportation under this policy. Citizenship would be made far harder to obtain; dual-national revocation is pursued where consistent with denaturalisation law (e.g. security threats, fraud, rape-gang complicity).",
+    yes:{ stop:true, result:{
+      outcome:"stay", title:"Stay in the UK",
+      body:"Subject to normal UK criminal law. Core social benefits reserved for British citizens under Restore Britain's welfare reforms."
+    }},
+    no:{}
+  },
+  {
+    id:"illegal",
+    q:"Are you in the UK illegally?",
+    hint:"Includes entry without authorisation, visa overstay, failed asylum claim, or small-boat / cross-Channel arrival. Restore Britain estimates up to 2 million illegal migrants in Britain; every single one must be deported.",
+    yes:{ stop:true, result:{
+      outcome:"deport", title:"Deportation - mandatory",
+      body:"Removal under the mass deportations programme. Illegal entrants declared inadmissible and removed to country of origin or a designated third country.",
+      list:[
+        "Modular, tent-based holding facilities on MoD/government land - mandatory detention pending deportation; no bail into the community",
+        "“Hostile environment”: RtW/RtR checks, NHS status proof, banking restrictions, employer & landlord reporting; voluntary returns or forced removal (target 150,000–200,000/year)",
+        "Retrospective rescission of asylum granted after illegal entry; third-country processing; “Deportation NATO” diplomatic pressure on non-cooperative states",
+        "Leave the ECHR - no appeals, no legal aid; illegal entry equals automatic rejection"
+      ]
+    }},
+    no:{}
+  },
+  {
+    id:"crime",
+    q:"Have you committed a crime?",
+    hint:"Applies to any foreign national legally resident in Britain. Restore Britain prioritises serious offences (incl. rape-gang cases and collaborators) but sees no reason to tolerate lesser crimes either - fraud, fly-tipping, etc.",
+    yes:{ stop:true, result:{
+      outcome:"deport", title:"Deportation - automatic",
+      body:"Foreign criminals are removed automatically. Committing crime as a guest is both wrong and an abuse of hospitality.",
+      list:[
+        "Non-British nationals who knowingly covered up or enabled rape-gang abuse - even through silence - face automatic deportation",
+        "Lesser offences also grounds for removal; UK Borders Act barriers to automatic deportation would be repealed"
+      ]
+    }},
+    no:{}
+  },
+  {
+    id:"security",
+    q:"Are you considered an active threat to UK security, or to actively reject the British way of life?",
+    hint:"Includes Islamic extremism and those who wish to do Britain harm. “Shamima's Law” would revoke right to remain and strip citizenship from dual-national extremists.",
+    yes:{ stop:true, result:{
+      outcome:"deport", title:"Deportation",
+      body:"Removal on national security / extremism grounds. Foreign hate preachers banned from entry; those already here deported.",
+      list:[
+        "Dual nationals: citizenship revocation pursued where in the national interest and consistent with denaturalisation law",
+        "Mosques preaching extreme doctrine shut down"
+      ]
+    }},
+    no:{}
+  },
+  {
+    id:"afghan",
+    q:"Were you brought to Britain under an Afghan emergency resettlement scheme or similar bespoke programme?",
+    hint:"Restore Britain treats this as temporary refuge, not a permanent home.",
+    yes:{ stop:true, result:{
+      outcome:"deport", title:"Removal to a safe third country",
+      body:"Every Afghan national brought under emergency schemes subject to removal and relocation to a safe third country - regionally, closer to home.",
+      list:[
+        "Britain cannot serve as a permanent destination for anyone claiming hardship worldwide",
+        "Senior officials involved in leaks or cover-ups would face termination or prosecution"
+      ]
+    }},
+    no:{}
+  },
+  {
+    id:"integration",
+    q:"Do you meet the integration / contribution criteria?",
+    hint:"Must speak English · be self-supporting (working & paying tax) · not live in social housing · not claim benefits · not refuse work · otherwise integrated into British society.",
+    yes:{ stop:true, result:{
+      outcome:"stay-conditional", title:"Allowed to remain - on time-limited terms",
+      body:"Indefinite Leave to Remain overhauled: no free access to benefits, housing, or the NHS. Residency is time-limited, monitored, and easily revocable.",
+      list:[
+        "Status conditional on continued work, tax contribution, and good character",
+        "Re-evaluation if any criteria cease to be met → leads to deportation",
+        "Funds available for voluntary return home if ILR benefits are withdrawn"
+      ]
+    }},
+    no:{ stop:true, result:{
+      outcome:"deport", title:"Deportation",
+      body:"Millions of foreign nationals who cannot speak English, live in social housing, claim benefits, refuse to work, or fail to integrate should go home.",
+      list:[
+        "All state benefits withdrawn from foreign nationals",
+        "ILR benefits cancelled; residency must be earned and continually justified",
+        "If that means millions go, then millions go"
+      ]
+    }}
+  }
+];
+
+/* ---------- State ---------- */
+// path: array of {q, label} for each question answered, in order
+let path = [];
+let currentIndex = 0;
+let finalResult = null; // set once a stop-branch is reached
+
+/* ---------- Helpers ---------- */
+
+function outcomeClass(outcome){
+  if(outcome==="deport") return "deport";
+  if(outcome==="stay" || outcome==="stay-conditional") return "stay";
+  if(outcome==="warn") return "warn";
+  return "";
+}
+
+function endTag(outcome){
+  if(outcome==="deport") return `
+    <div class="stamp-wrap">
+      <div class="endtag stamp deport" role="status">
+        <span class="stamp-eyebrow">Official decision</span>
+        <span class="stamp-verdict">Removed</span>
+        <span class="stamp-result">From the UK</span>
+      </div>
+    </div>`;
+  if(outcome==="stay") return `
+    <div class="stamp-wrap">
+      <div class="endtag stamp stay" role="status">
+        <span class="stamp-eyebrow">Official decision</span>
+        <span class="stamp-verdict">Approved</span>
+        <span class="stamp-result">Remains in the UK</span>
+      </div>
+    </div>`;
+  if(outcome==="stay-conditional") return `
+    <div class="stamp-wrap">
+      <div class="endtag stamp stay" role="status">
+        <span class="stamp-eyebrow">Official decision</span>
+        <span class="stamp-verdict">Approved</span>
+        <span class="stamp-result">Remains - conditional</span>
+      </div>
+    </div>`;
+  if(outcome==="warn") return `
+    <div class="stamp-wrap">
+      <div class="endtag stamp warn" role="status">
+        <span class="stamp-eyebrow">Under review</span>
+        <span class="stamp-verdict">Pending</span>
+        <span class="stamp-result">Decision not final</span>
+      </div>
+    </div>`;
+  return "";
+}
+
+/* ---------- Rendering ---------- */
+
+function renderTrail(){
+  const trail = document.getElementById('trail');
+  trail.innerHTML = "";
+  path.forEach((step, i)=>{
+    const c = document.createElement('div');
+    c.className = "crumb " + (step.label==="Yes" ? "yes" : "no");
+    c.textContent = step.label;
+    c.title = step.q;
+    c.addEventListener('click', ()=>{ goToStep(i); });
+    trail.appendChild(c);
+  });
+  if(finalResult){
+    const c = document.createElement('div');
+    c.className = "crumb";
+    c.textContent = "Result";
+    c.style.fontWeight = "bold";
+    c.addEventListener('click', ()=>{ renderResults(); });
+    trail.appendChild(c);
+  }
+}
+
+function renderQuestionCard(){
+  const q = questions[currentIndex];
+  const card = document.getElementById('card');
+  card.className = "card";
+  card.innerHTML = `
+    <div class="qlabel">Question ${currentIndex+1} of ${questions.length}</div>
+    <div class="qtext">${q.q}</div>
+    ${q.hint ? `<div class="qhint">${q.hint}</div>` : ""}
+    <div class="spacer"></div>
+    <div class="answers">
+      <button class="ans-btn yes" id="btn-yes">Yes</button>
+      <button class="ans-btn no" id="btn-no">No</button>
+    </div>
+    ${renderBackRow()}
+  `;
+  document.getElementById('btn-yes').addEventListener('click', ()=> answer("Yes"));
+  document.getElementById('btn-no').addEventListener('click', ()=> answer("No"));
+  attachBack();
+}
+
+function renderResults(){
+  const node = finalResult;
+  const cls = outcomeClass(node.outcome);
+  const card = document.getElementById('card');
+  card.className = "card " + cls;
+
+  let listHtml = node.list ? "<ul>" + node.list.map(li=>`<li>${li}</li>`).join('') + "</ul>" : "";
+
+  let recapHtml = path.map(step=>`
+    <div class="recap-item">
+      <div class="recap-q">${step.q}</div>
+      <div class="recap-a ${step.label==='Yes'?'yes':'no'}">${step.label}</div>
+    </div>
+  `).join('');
+
+  card.innerHTML = `
+    <div class="qlabel result">Result</div>
+    <div class="qtext">${node.title}</div>
+    <div class="outcome-body">
+      <p style="margin:6px 0 0;">${node.body}</p>
+      ${listHtml}
+      ${endTag(node.outcome)}
+      <div class="recap">
+        <div class="qlabel" style="margin-bottom:6px;">Your answers</div>
+        ${recapHtml}
+      </div>
+    </div>
+    <div class="spacer"></div>
+    ${renderBackRow()}
+  `;
+  renderTrail();
+  attachBack();
+}
+
+function renderBackRow(){
+  return `
+    <div class="nav-row">
+      <button class="nav-btn" id="btn-back" ${path.length===0?'disabled':''}>← Back</button>
+      <button class="nav-btn primary" id="btn-restart">Restart</button>
+    </div>
+  `;
+}
+
+function attachBack(){
+  const back = document.getElementById('btn-back');
+  if(back) back.addEventListener('click', goBack);
+  const restart = document.getElementById('btn-restart');
+  if(restart) restart.addEventListener('click', restartAll);
+}
+
+/* ---------- Navigation logic ---------- */
+
+function answer(label){
+  const q = questions[currentIndex];
+  path.push({ q: q.q, label, index: currentIndex });
+
+  const branch = label==="Yes" ? q.yes : q.no;
+
+  if(branch && branch.stop){
+    finalResult = branch.result;
+    renderTrail();
+    renderResults();
+    return;
+  }
+
+  // continue to next question
+  currentIndex++;
+  finalResult = null;
+  renderTrail();
+  renderQuestionCard();
+}
+
+function goBack(){
+  if(path.length===0) return;
+  path.pop();
+  finalResult = null;
+  currentIndex = path.length;
+  renderTrail();
+  renderQuestionCard();
+}
+
+function goToStep(i){
+  // Jump back to right before step i was answered, i.e. show question i again
+  path = path.slice(0, i);
+  finalResult = null;
+  currentIndex = i;
+  renderTrail();
+  renderQuestionCard();
+}
+
+function restartAll(){
+  path = [];
+  currentIndex = 0;
+  finalResult = null;
+  renderTrail();
+  renderQuestionCard();
+}
+
+/* ---------- Init ---------- */
+renderTrail();
+renderQuestionCard();
+</script>
+</body>
+</html>
